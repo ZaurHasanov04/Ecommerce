@@ -26,10 +26,13 @@
                                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                                         {% for sub_category in category.sub_categories.all %}
                                             <li >
-                                                <a class="dropdown-item " href="#">{{sub_category.name}}</a>
+                                                <a class="dropdown-item dropdown-toggle " href="#">{{sub_category.name}} </a>
                                                 <hr>
                                                 {% for brand in sub_category.brands.all %}
-                                                    <h1>{{brand}}<h1>
+                                                    <a class="dropdown-item " href="#">{{brand}}</a>
+                                                    {% for product in brand.products.all %}
+                                                        <a class="dropdown-item " href="#">{{product}}</a>
+                                                    {% endfor %}
                                                 {% endfor %}
                                             </li>
                                         {% endfor %}
@@ -42,6 +45,8 @@
             </nav>
         </div>
     </div>
+
+    
 
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>

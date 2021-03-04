@@ -32,10 +32,10 @@ def product_detail(request, slug):
 #         return instance
 
 
-def product(request):
-    products = Product.objects.all()
-    context = {
-        'products': products,
-        'user': request.user
-    }
-    return render(request, 'products/product.html', context)
+# def product(request):
+#     products = Product.objects.all()
+#     context = {
+#         'products': products,
+#         'user': request.user
+#     }
+#     return render(request, 'products/product.html', context)

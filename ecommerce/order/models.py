@@ -3,7 +3,8 @@ from address.models import Address
 from billing.models import BillingProfile
 from backend.models import User
 from cart.models import Cart
-import datetime
+from datetime import datetime, timedelta
+
 # Create your models here.
 
 ORDER_STATUS_CHOICES=(
@@ -22,49 +23,36 @@ class OrderQuerySet(models.QuerySet):
             return self.filter(update__gte=start_date)
         return self.filter(update__gte=start_date).filter(update__lte=end_date)
 
-    def by_filter_weeks(self,start_weeks_ago=2, number_of_weeks=1):
-        if number_of.weeks>start_weeks_ago:
-            number_of_weeks=start_weeks_ago
-        
-        start_date_ago=start_weeks_ago * 7
-        end_date_ago=start_weeks_ago - (number_of_weeks*7)
+    def by_weeks_range(self, weeks_ago=3, number_of_weeks=2):
+        if number_of_weeks > weeks_ago:
+            number_of_weeks = weeks_ago
+        day_ago_start = weeks_ago * 7
+        day_ago_end = day_ago_start - (number_of_weeks * 7)
         start_date = timezone.now() - timedelta(days=day_ago_start)
-        print(timedelta(days=day_ago_start))
         end_date = timezone.now() - timedelta(days=day_ago_end)
-        print(end_date)
-        print(start_date)
+
+        return self.by_range(start_date, end_date=end_date)
+
+    def by_days_range(self, days_ago=12, number_of_days=3):
+        if number_of_days > days_ago:
+            number_of_days = days_ago            
+        start_date = timezone.now() - timedelta(days=days_ago)
+        end_date = timezone.now() - timedelta(days=days_ago - number_of_days)
+
         return self.by_range(start_date,end_date=end_date)
-    def by_filter_days(self, start_days=10, end_days=1):
-        if end_days>30:
-            print("get tezeden gel")
-        elif end_days>start_days:
-            end_days=start_days
-            end_days+=1
-        start_days_ago=timezone.now()-timedelta(days=start_days)
-        end_days_ago=timezone.now()-timedelta(days=end_days)
-        return self.by_range(start_days_ago, end_date=end_days_ago)
-        
-
-
-   
-
-
-
-
-    
 
 class OrderManager(models.Manager):
     def get_queryset(self):
         return OrderQuerySet(self.model, using=self._db)
-    def by_filter_weeks(self):
-        return self.get_queryset().by_weeks_range()
+
     def by_status(self,status='created'):
         return self.get_queryset().by_status(status=status)
-    def by_filter_days(self):
-        return self.get_queryset().by_filter_days()
 
+    def by_weeks_range(self):
+        return self.get_queryset().by_weeks_range()
 
-
+    def by_days_range(self):
+        return self.get_queryset().by_days_range()
 
 class Order(models.Model):
     billing_profile = models.ForeignKey(BillingProfile,on_delete=models.CASCADE,related_name='billing_profile',blank=True,null=True)
@@ -79,7 +67,8 @@ class Order(models.Model):
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
-    object = OrderManager()
+
+    objects = OrderManager()
 
 
 

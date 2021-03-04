@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from category.models import Category
+from category.models import *
 from utils.genslug import gen_slug
 from django.urls import reverse
 
@@ -30,6 +30,8 @@ def upload_product_file_loc(instance,filename):
 
 class Product(models.Model):
     product_category = models.ForeignKey(Category,on_delete=models.CASCADE,blank=True,null=True)
+    product_subcategory = models.ForeignKey(SubCategory,on_delete=models.CASCADE,blank=True,null=True)
+    product_brand = models.ForeignKey(Brand,on_delete=models.CASCADE,blank=True,null=True)
     slug = models.SlugField(blank=True)
     product_name = models.CharField(max_length=50,blank=True,null=True)
     product_descrption = models.TextField(blank=True,null=True)

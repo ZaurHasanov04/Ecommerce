@@ -7,11 +7,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('base.urls')),
     path('category/', include('category.urls')),
-    path('products/', include('product.urls')),
-    path('account/', include('users.urls'))
-    
+    path('', include('product.urls')),
+    path('brands/', include('brand.urls')),
+    path('order/', include('order.urls')),
+    path('', include('cart.urls'))
 ]
 
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+    urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

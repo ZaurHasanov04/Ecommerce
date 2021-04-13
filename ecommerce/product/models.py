@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from category.models import *
+from brand.models import *
 from utils.genslug import gen_slug
 from django.urls import reverse
 
@@ -29,9 +30,7 @@ def upload_product_file_loc(instance,filename):
 
 
 class Product(models.Model):
-    product_category = models.ForeignKey(Category,on_delete=models.CASCADE,blank=True,null=True)
-    product_subcategory = models.ForeignKey(SubCategory,on_delete=models.CASCADE,blank=True,null=True)
-    product_brand = models.ForeignKey(Brand,on_delete=models.CASCADE,blank=True,null=True, related_name="products")
+    product_brand = models.ForeignKey(Brand,on_delete=models.CASCADE,blank=True,null=True,related_name="products")
     slug = models.SlugField(blank=True)
     product_name = models.CharField(max_length=50,blank=True,null=True)
     product_descrption = models.TextField(blank=True,null=True)
@@ -52,8 +51,8 @@ class Product(models.Model):
         return self.product_name
 
     def get_absolute_url(self):
-        return reverse("product_detail", kwargs={"slug": self.slug})
-        
+        return reverse("product_details", kwargs={"cat_slug":self.product_brand.sub_category.category.cat_slug,"subcat_slug":self.product_brand.sub_category.subcat_slug,"brand_slug":self.product_brand.brand_slug,"product_slug":self.slug})
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = gen_slug(self.product_name)

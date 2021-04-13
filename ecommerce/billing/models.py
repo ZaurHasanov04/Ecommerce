@@ -22,7 +22,7 @@ class BillingProfileManager(models.Manager):
 
 
 class BillingProfile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True,related_name='billing_user')
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
@@ -30,6 +30,9 @@ class BillingProfile(models.Model):
 
     objects = BillingProfileManager()
 
+    def __str__(self):
+        return self.user.username
+    
     def get_cards(self):
         return self.card_set.all()
 

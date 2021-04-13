@@ -70,5 +70,12 @@ class Order(models.Model):
 
     objects = OrderManager()
 
+    def save(self, *args, **kwargs):
+        if not self.shipping_address_final:
+            self.shipping_address_final = self.shipping_address.get_shortname_address()
+        if not self.billing_address_final:
+            self.billing_address_final = self.billing_address_final.get_shortname_address()
+        super()
+
 
 

@@ -6,32 +6,36 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 from .serializers import *
 
 # Create your views here.
 
-class ProductViews(APIView):
-    def get(self,request):
-        products = Product.objects.all()
-        serializer = ProductSerializers(products, many=True)
-        return Response(serializer.data)
 
-    def post(self, request):
-        serializer = ProductSerializers(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+class Products(APIView):
+
+    def get(self, request):
+        products=Product.objects.all()
+        prod=ProductSerializers(products, many=True)
+        return Response(prod.data)
 
 
 class ProductDetailViews(APIView):
-    def get(self,request,id):
-        product = Product.objects.get(id=id)
-        serializer = ProductDetailSerializers(product)
-        return Response(serializer.data)
+    def get(self, request, id):
+        prodetail=Product.objects.get(id=id)
+        detail=ProductDetailSerializers(prodetail)
+        return Response(detail.data)
+
+
+
+
 
 def index(request):
     categories = Category.objects.prefetch_related('sub_categories').all()
+    c = Category.objects.get(id=1)
+    a = c
+    print(a)
+    
     sliders = Slider.objects.all()
     #request.session['test'] = 10
     print(request.session.items())
@@ -39,6 +43,7 @@ def index(request):
     context = {
         'categories':categories,
         'sliders':sliders,
+        'c': c,
         'products':products, 
     }
     return render(request,'index.html', context)

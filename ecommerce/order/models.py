@@ -74,8 +74,8 @@ class Order(models.Model):
         if not self.shipping_address_final:
             self.shipping_address_final = self.shipping_address.get_shortname_address()
         if not self.billing_address_final:
-            self.billing_address_final = self.billing_address_final.get_shortname_address()
-        super()
+            self.billing_address_final = self.billing_address.get_shortname_address()
+        super().save(*args, **kwargs)
 
 
 

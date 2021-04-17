@@ -17,12 +17,11 @@ class BillingProfileManager(models.Manager):
             qs.user.is_phone_status = True
             qs.user.save()
         return qs 
-# burda qs-i return edir, ne menasi var bunu return etmenin? ve bu manager, userin ona gonderilen 
-# sifreni duz daxil edib etmediyini yoxluyur?
+
 
 
 class BillingProfile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True,related_name='billing_user')
+    user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True,null=True, related_name='billing_user')
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)

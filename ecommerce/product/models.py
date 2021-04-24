@@ -1,10 +1,10 @@
-from django.db import models
+from brand.models import *
+from category.models import *
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from category.models import *
-from brand.models import *
-from utils.genslug import gen_slug
+from django.db import models
 from django.urls import reverse
+from utils.genslug import gen_slug
 
 # Create your models here.
 

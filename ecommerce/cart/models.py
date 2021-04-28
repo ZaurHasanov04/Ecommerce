@@ -34,7 +34,7 @@ class CartMeneger(models.Manager):
 
 
 class CartProduct(models.Model):
-    product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=True,null=True)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=True,null=True,related_name='products_cart')
     quantity = models.IntegerField(default=1,blank=True,null=True)
 
     def __str__(self):

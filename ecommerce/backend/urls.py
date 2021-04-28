@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import *
+from backend.views import *
 
 
 urlpatterns=[
-    path('api/user/', UserDetail.as_view())
+    path('api/user/', UserDetail.as_view()),
+    # path('api/token/', LoginTokenSerializers.as_view())
 ]

@@ -154,11 +154,11 @@ CSRF_COOKIE_HTTPONLY = True
 
 
 
-# REST_FRAMEWORK = {
+REST_FRAMEWORK = {
     
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     )
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
     
-# }
+}

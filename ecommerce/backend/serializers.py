@@ -6,10 +6,20 @@ from cart.models import Cart, CartProduct
 from product.models import Product
 from django.http import JsonResponse
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class EmailSerializers(serializers.Serializer):
+    email=serializers.EmailField()
+
+class PasswordResetSerializers(serializers.Serializer):
+    password=serializers.CharField(write_only=True, required=True,validators=[validate_password])
+    password2=serializers.CharField(write_only=True, required=True)
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError("password tekrari sehvdir.")
+        return attrs
 
 
 class TokenPairSerializers(TokenObtainPairSerializer):

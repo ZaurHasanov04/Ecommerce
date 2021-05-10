@@ -7,6 +7,8 @@ from backend.models import *
 from django.core.mail import send_mail
 from django.core.management import settings
 from django.shortcuts import render, redirect
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 
 
@@ -32,11 +34,27 @@ class PasswordResetEmail(APIView):
 
 
 def check_email(request):
+    now=timezone.now() + timezone.timedelta(hours=4)
     if request.method=="GET":
         token=request.GET.get('token')
+        register=request.GET.get('register')
         try:
             check_token=UserVerify.objects.get(token=token)
-            return redirect("http://127.0.0.1:8000/password_reset/?token=" + f"{check_token.token}")
+            if register is None:
+                return redirect("http://127.0.0.1:8000/password_reset/?token=" + f"{check_token.token}")
+            else:
+                token_date=datetime.strptime(str(check_token.date), "%Y-%m-%d %H:%M:%S.%f%z")
+                if now > token_date:
+                    print(now)
+                    print(check_token)
+                    check_token.delete()
+                    return JsonResponse({"error":"tokenin vaxti bitib"})
+                else:    
+                    get_user=User.objects.get(id=check_token.user.id)
+                    get_user.is_active=True
+                    get_user.save()
+                    check_token.delete()
+                    return redirect('http://127.0.0.1:8000/api/token')
         except:
             return JsonResponse({'error':"invalid token"})
     return JsonResponse({'data':'None'})

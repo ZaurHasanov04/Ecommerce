@@ -1,4 +1,4 @@
-# PragmatechPythonProject
+# PythonProject
 
 Gunler,aylar ve status ucun filter funksiyasi hazirdir.
 "API"-lerin yazilmasi ugurla davam edir.
